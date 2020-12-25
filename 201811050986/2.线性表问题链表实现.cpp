@@ -1,48 +1,50 @@
 #include <iostream>
-#include <algorithm>
-#include <string>
 using namespace std;
-struct student//声明结构体
+struct node
 {
-	int math;
-    int english;
-    int chinese;
-    int num;
+    int data;
+    node *next;
 };
-bool comp(student stu1,student stu2)//设置比较函数
-{
-    int sum1=stu1.math+stu1.english+stu1.chinese;
-    int sum2=stu2.math+stu2.english+stu2.chinese;
-    if(sum1==sum2)
-    {
-        if(stu1.chinese==stu2.chinese)
-        {
-            {
-                return stu1.num<stu2.num;//总分、语文都相同，学号小的在前
-            }
-           
-        }
-        else
-            return stu1.chinese>stu2.chinese;//总分相同，语文高的在前
-    }
-    else
-        return sum1>sum2;//优先考虑总分成绩，高的在前
- 
-}
 int main()
 {
-    int n;
-	cin>>n;
-    struct student stu[100];
-    for(int i=0; i<n; i++)
-    {
-        cin>>stu[i].chinese>>stu[i].english>>stu[i].math;//输入数据
-        stu[i].num=i+1;
+    int n,m,i;
+    while(cin>>n>>m&&n)
+	{
+    node *first;
+    node *p,*q;
+    first = new node;
+    first->data = 1;
+    first->next = first;
+    if(m!=1)
+	{
+    for(i=n;i>=2;i--){
+        p=new node;
+        p->data = i;
+        p->next=first->next;
+        first->next=p;
     }
-    sort(stu,stu+n,comp);//成绩排序
-    for( i=0; i<n; i++)
-    {
-        cout<<stu[i].num<<" "<<stu[i].math+stu[i].english+stu[i].chinese<<" "<<endl;//输出数据
+    q = first;
+    while(q->next!=q)
+	{
+        n=m-2;
+        while(n--)
+		{
+            q=q->next;
+        }
+        p=q->next;
+        q->next=p->next;
+        delete p;
+        q=q->next;
     }
-    return 0;
+    cout<<q->data<<endl;
+    }
+    else
+        cout<<n<<endl;
+    while(first->next!=first){
+        q=first;
+        first=first->next;
+        delete q;
+    }
+    delete first;
+    }
 }
